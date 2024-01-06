@@ -1,11 +1,20 @@
+/*
+    This controller handles User:
+    Register
+        Hash the password and saves the user
+    Login 
+        validates credentials & generates a token
+    Authenticate
+        generate a JWT token when a new user is successfully registered. This token can be used for immediate login after registration 
+*/
+
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 const register = async(req, res) => {
     try {
-        const { userName, email, password } = req.body;
+        const { username, email, password } = req.body;
         const userExist = await User.findOne({ email });
         if(userExist){
             console.log('User already exists')
@@ -14,24 +23,19 @@ const register = async(req, res) => {
                 message: 'User already exists'
             })
         }
-        //hash password
         const hashedPassword = await bcrypt.hash(password, 12)
         
-        //save User
         const user = new User({
-            userName, email, password: hashedPassword
+            username, email, password: hashedPassword
         });
         
         user.save();
 
-        // generate JWT token
-        //generate a JWT token when a new user is successfully registered. This token can be used for immediate login after registration
         const token = jwt.sign(
             { userId: user._id }, 
             process.env.JWT_SECRET, 
             { expiresIn: '1h' }
         );
-
 
         res.status(201).json({ 
             message: 'User registered successfully', 
@@ -54,14 +58,12 @@ const login = async(req, res) => {
                 message: 'Invalid Credentials.'
             })
         }
-        // validate password
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
             return res.status(400).json({
                 message: 'Invalid Credentials.'
             })
         }
-        // generate JWT token
         const token = jwt.sign(
             { userId: user._id }, 
             process.env.JWT_SECRET, 

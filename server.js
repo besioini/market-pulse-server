@@ -1,20 +1,25 @@
+/*
+    Server & database setup
+        allow send json, url encoded & handling cors
+        Running on PORT 5000
+    MongoDB
+        connecting DB to MOngoDB Atlas URI
+    Routes
+        Add routes
+*/
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
 
-// server setup
 const app = express();
-// to allow send json
 app.use(express.json())
-// to allow send url encoded
 app.use(express.urlencoded({ extended: false }))
-// to handle CORS
 app.use(cors());
 
-
-// database setup
 const connectDB = async() => {
     try {
         const db = process.env.MONGODB_URI;
@@ -25,17 +30,16 @@ const connectDB = async() => {
             console.log('MongoDB successfully connected');
     } catch (err) {
         console.error('MongoDB connection error:', err);
-        process.exit(1); // Optional: Exit the process in case of a connection error
+        process.exit(1); 
+        // Optional: Exit the process in case of a connection error
     }
 }
-// Connect DB
+
 connectDB();
 
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes)
 
-// routes
-app.use('/api/users', userRoutes)
-
-// Run Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT} ...`);

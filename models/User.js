@@ -1,7 +1,11 @@
+/*
+    User will store username, email, password & add creation and update date
+*/
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    userName: {
+    username: {
         type: String, 
         required: true,
         // index: true
@@ -24,7 +28,6 @@ const userSchema = new mongoose.Schema({
 },
 { 
     timestamps: true, 
-    versionKey: false 
 });
 
 const User = mongoose.model('User', userSchema);
