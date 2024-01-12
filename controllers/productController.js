@@ -39,7 +39,28 @@ const getAllProducts = async(req, res) => {
         })
     }
 }
+
+const getProduct = async(req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if(!product){
+            console.log('Product not found!');
+            return res.status(404).json({
+                message: 'Product not found',
+            })
+        }
+        res.json(product);       
+    } catch (error){
+        console.log('Error fetching product', error.message);
+        res.status(500).json({
+            message: 'Error fetching product',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     addProduct,
-    getAllProducts
+    getAllProducts,
+    getProduct
 }

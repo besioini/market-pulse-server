@@ -43,8 +43,11 @@ const register = async(req, res) => {
         });
         console.log('User registered successfully');
     } catch (err) {
-        res.status(500).json({ message: 'Error registering user', error: err.message });
         console.log('Registration error:', err.message);
+        res.status(500).json({ 
+            message: 'Error registering user',
+            error: err.message 
+        });
     }  
 }
 
@@ -76,11 +79,11 @@ const login = async(req, res) => {
         });
         console.log('Login successful')
     } catch (err) {
+        console.log('Login error:', err.message);
         res.status(500).json({ 
             message: 'Error logging in', 
             error: err.message 
         });
-        console.log('Login error:', err.message);
     }
 }
 
