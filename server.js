@@ -14,6 +14,7 @@ const cors = require('cors');
 require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 app.use(express.json())
@@ -30,15 +31,15 @@ const connectDB = async() => {
             console.log('MongoDB successfully connected');
     } catch (err) {
         console.error('MongoDB connection error:', err);
-        process.exit(1); 
-        // Optional: Exit the process in case of a connection error
+        process.exit(1); // Optional: Exit the process in case of a connection error
     }
 }
 
 connectDB();
 
 app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes)
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
