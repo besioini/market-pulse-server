@@ -10,8 +10,8 @@ const authenticate = require('../middleware/authenticate');
 
 router.post('/addToCart', authenticate, cartController.addToCart);
 router.get('/getCart/:userId', authenticate, cartController.getCart);
-// router.put('/updateCartItem', cartController.updateCartItem);
-// router.delete('/removeFromCart', cartController.removeFromCart);
+router.put('/updateCartItem', authenticate, cartController.updateCartItem);
+router.delete('/removeFromCart', authenticate, cartController.removeFromCart);
 
 module.exports = router;
 

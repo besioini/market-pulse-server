@@ -8,9 +8,12 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const authenticate = require('../middleware/authenticate');
 
-router.post('/addProduct', productController.addProduct);
+// Buyer
 router.get('/getAllProducts', productController.getAllProducts);
 router.get('/getProduct/:id', productController.getProduct);
+// Seller
+router.post('/addProduct', authenticate, productController.addProduct);
+router.get('/getAllSellerProducts/:sellerId', authenticate, productController.getAllSellerProducts);
 // router.put('/updateProduct/:id', authenticate, productController.updateProduct);
 // router.delete('/deleteProduct/:id', authenticate, productController.deleteProdcut);
 

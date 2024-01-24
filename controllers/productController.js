@@ -59,8 +59,31 @@ const getProduct = async(req, res) => {
     }
 };
 
+const getAllSellerProducts = async (req, res) => {
+    try {
+        const sellerId = req.params.sellerId;
+        const products = await Product.find({ seller: sellerId });
+        
+        if (!products) {
+            console.log('No products found for this seller.')
+            return res.status(404).json({ 
+                message: 'No products found for this seller.' 
+            });
+        }
+        console.log(products);
+        res.json(products);
+    } catch (error) {
+        console.log('Error fetching products by seller:', error.message);
+        res.status(500).json({
+            message: 'Error fetching products by seller',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     addProduct,
     getAllProducts,
-    getProduct
+    getProduct,
+    getAllSellerProducts
 }

@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         // select: false
     },
+    type: {
+        type: String,
+        enum: ['regular', 'seller'],
+        require: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now
