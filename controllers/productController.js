@@ -65,9 +65,9 @@ const getAllSellerProducts = async (req, res) => {
         const products = await Product.find({ seller: sellerId });
         
         if (!products) {
-            console.log('No products found for this seller.')
+            console.log('No products found.')
             return res.status(404).json({ 
-                message: 'No products found for this seller.' 
+                message: 'No products found.' 
             });
         }
         console.log(products);
@@ -81,9 +81,54 @@ const getAllSellerProducts = async (req, res) => {
     }
 };
 
+const updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+
+        const product = await Product.findByIdAndUpdate(id, updates, { new: true });
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        console.log('Product successfully updated');
+        res.json(product);
+    } catch (error) {
+        console.log('Error updating product:', error.message);
+        res.status(500).json({
+            message: 'Error updating product',
+            error: error.message
+        });
+    }
+};
+
+const removeProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const product = await Product.findByIdAndDelete(id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        console.log('Product successfully removed');
+        res.status(204).json({ message: 'Product successfully removed' });
+    } catch (error) {
+        console.log('Error removing product:', error.message);
+        res.status(500).json({
+            message: 'Error removing product',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     addProduct,
     getAllProducts,
     getProduct,
-    getAllSellerProducts
+    getAllSellerProducts,
+    updateProduct,
+    removeProduct
 }

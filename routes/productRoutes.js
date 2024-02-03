@@ -14,7 +14,7 @@ router.get('/getProduct/:id', productController.getProduct);
 // Seller
 router.post('/addProduct', authenticate, productController.addProduct);
 router.get('/getAllSellerProducts/:sellerId', authenticate, productController.getAllSellerProducts);
-// router.put('/updateProduct/:id', authenticate, productController.updateProduct);
-// router.delete('/deleteProduct/:id', authenticate, productController.deleteProdcut);
+router.put('/updateProduct/:id', authenticate, productController.updateProduct);
+router.delete('/removeProduct/:id', authenticate, productController.removeProduct);
 
 module.exports = router;

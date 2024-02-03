@@ -21,19 +21,17 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors());
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
+
+const db = process.env.MONGODB_URI;
 
 const connectDB = async() => {
     try {
-        const db = process.env.MONGODB_URI;
-        // console.log(db)
-        await mongoose.connect(db, 
-            // { useNewUrlParser: true, useUnifiedTopology: true }
-        );
+        await mongoose.connect(db);
             console.log('MongoDB successfully connected...');
     } catch (err) {
         console.error('MongoDB connection error:', err);
-        process.exit(1); // Optional: to exit the process in case of a connection error
+        process.exit(1); //exit the process in case of a connection error
     }
 }
 

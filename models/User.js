@@ -16,23 +16,20 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String, 
         required: true,
-        // index: true
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        // index: true
     },
     password: {
         type: String,
         required: true,
-        // select: false
     },
     type: {
         type: String,
         enum: ['regular', 'seller'],
-        require: true,
+        required: true,
     },
 },
 { 
