@@ -11,9 +11,9 @@ const authenticate = require('../middleware/authenticate');
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-// router.get('./getProfile', authenticate, userController.getProfile);
-// router.put('./updateProfile', authenticate, userController.updateProfile);
-// router.delete('./deleteAccount', authenticate, userController.deleteAccount);
+router.get('/getProfile/:userId', authenticate, userController.getProfile);
+router.put('/updateProfile/:userId', authenticate, userController.updateProfile);
+router.delete('/deleteAccount/:userId', authenticate, userController.deleteAccount);
 
 module.exports = router;
 
