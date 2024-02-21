@@ -27,7 +27,7 @@ const register = async(req, res) => {
         if(userExist){
             console.log('User already exists')
             return res.json({
-                status: 400,
+                status: 409,
                 message: 'User already exists'
             })
         }
@@ -37,7 +37,7 @@ const register = async(req, res) => {
             firstname, lastname, username, email, password: hashedPassword, type
         });
         
-        user.save();
+        await user.save();
 
         const token = jwt.sign(
             { userId: user._id }, 
@@ -47,7 +47,8 @@ const register = async(req, res) => {
 
         res.status(201).json({ 
             message: 'User registered successfully', 
-            token 
+            token,
+            userType: user.type
         });
         console.log('User registered successfully');
     } catch (err) {

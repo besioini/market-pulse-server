@@ -4,7 +4,8 @@
 
     Review req.query and req.params
     // req.params.userId
-    URL: http://localhost:5000/api/cart/getCart/658dc9826052bf54cf7c42d1   
+    URL: http://localhost:5000/api/cart/getCart/658dc9826052bf54cf7c42d1
+
     // req.query.userId 
     URL: http://localhost:5000/api/cart/getCart?userId=83469834 
 
@@ -102,7 +103,8 @@ const updateCartItem = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     try {
-        const { userId, productId } = req.body;
+        const userId = req.userData.userId; 
+        const { itemId } = req.params;
 
         const cart = await Cart.findOne({ user: userId });
         if (!cart) {
@@ -112,7 +114,7 @@ const removeFromCart = async (req, res) => {
         }
 
         const itemIndex = cart.items.findIndex(
-            item => item.productId.toString() === productId
+            item => item._id.toString() === itemId
         );
 
         if (itemIndex > -1) {
@@ -129,6 +131,33 @@ const removeFromCart = async (req, res) => {
         res.status(500).json({ 
             message: "Server Error", error: err.message 
         });
+    }
+};
+
+const createPayment = async (req, res) => {
+    const { amount, items } = req.body;
+    try {
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: 'usd',
+        });
+
+        const order = new Order({
+            user: req.userData.userId,
+            items: items,
+            amount: amount,
+            paymentStatus: 'Pending',
+            transactionId: paymentIntent.id,
+        });
+
+        await order.save();
+
+        res.status(201).json({ 
+            clientSecret: paymentIntent.client_secret, 
+            orderId: order._id 
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error', error: err.message });
     }
 };
 

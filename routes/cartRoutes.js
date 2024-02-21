@@ -11,7 +11,7 @@ const authenticate = require('../middleware/authenticate');
 router.post('/addToCart', authenticate, cartController.addToCart);
 router.get('/getCart/:userId', authenticate, cartController.getCart);
 router.put('/updateCartItem', authenticate, cartController.updateCartItem);
-router.delete('/removeFromCart', authenticate, cartController.removeFromCart);
+router.delete('/removeFromCart/:itemId', authenticate, cartController.removeFromCart);
 
 module.exports = router;
 
