@@ -63,5 +63,5 @@ This will launch the client-side application.
 - **Checkout Process**: Including shipping information entry, payment processing, and order review.
 - **Order Confirmation and Tracking**: Users receive detailed confirmation and can track their orders .
 
-## Application design flowchart
+### Application design flowchart
 ![](./assets/MarketPulse.png)
